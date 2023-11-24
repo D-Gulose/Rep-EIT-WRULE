@@ -10,10 +10,15 @@ class serialCom:
         print("Port connection: " + port + " Baud rate: " + str(baud_rate))
         self.source = serial.Serial(
     port=port, baudrate=baud_rate, bytesize=8, timeout=2, stopbits=serial.STOPBITS_ONE)
+        
+    def pwm_setup(self):
+        user_input=input('enter an integer between 30 .. 120')
+        self.source.write(user_input.encode()) 
 
     def serial_loop(self):
         while True:
             try:
+                self.pwm_setup()
                 self.line = self.source.readline()#.decode('utf-8')
                 print(self.line)
 
@@ -21,8 +26,10 @@ class serialCom:
                 print("closing loop")
                 self.source.close()
 
-            num = input('Enter the integer:')
-            return self.write_read(num)
+            
+            #num = input('Enter the integer:')
+            #return self.write_read(num)
+
             
     def write_read(self, num):
         self.source.write(num,'utf-8')
